@@ -29,13 +29,10 @@ namespace TicketSale
     {
         static void Main(string[] args)
         {
-            Ingresso ticket = new Ingresso();
-            Poltrona cadeira = new Poltrona();
-            Console.WriteLine("Digite o numero de poltronas disponivel no teatro");
+            Sreen telas = new Sreen();
 
-            cadeira.setNumeroTotal(Convert.ToUInt16(Console.ReadLine()));
-
-            Console.WriteLine("numero digitado {0}", cadeira.getNumeroTotal()); 
+            //telas.screen_header();
+            telas.screen_home();
         }
     }
 }

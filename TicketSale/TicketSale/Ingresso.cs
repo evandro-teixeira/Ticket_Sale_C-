@@ -18,6 +18,9 @@ namespace TicketSale
             this.numeroPoltrona = numero;
         }
 
+
+
+
         public UInt16 getNumeroDaPoltrona()
         {
             return numeroPoltrona;
