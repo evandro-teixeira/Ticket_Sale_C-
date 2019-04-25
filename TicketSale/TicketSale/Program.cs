@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 
 public enum TipoIngresso
 {
-    Inteira = 0x01,
-    Meia = 0x02,
-    Inseto = 0x04,
+    Inteira = 0x00,
+    Meia,
+    Inseto,
 }
 
 public enum TipoCliente
 {
-    Adulto                  = 0x01,
-    ProfessorRedePublica    = 0x02,
-    Estudante               = 0x04,
-    Idoso                   = 0x08,
-    Crianca                 = 0x10,
-    CriancaRedePublica      = 0x20,
-    Bebe                    = 0x40,
+    Adulto = 0x00,
+    ProfessorRedePublica,
+    Estudante,
+    Idoso,
+    Crianca,
+    CriancaRedePublica,
+    Bebe,
 }
 
 namespace TicketSale
@@ -31,8 +32,13 @@ namespace TicketSale
         {
             Sreen telas = new Sreen();
 
-            //telas.screen_header();
-            telas.screen_home();
+            telas.ScreenHome();
+
+            Thread.Sleep(2000);
+
+            telas.ScreenConfigInit();
+
+            Console.ReadLine();
         }
     }
 }

@@ -9,8 +9,9 @@ namespace TicketSale
 {
     class Sreen
     {
+        private InfoEspetaculo Espetaculo = new InfoEspetaculo();
         private CultureInfo idioma = new CultureInfo("pt-BR");
-        const UInt16 NUMBER_CHAR  =  78;
+        const UInt16 NUMBER_CHAR  =  100;
         private DateTime data = new DateTime();
         private string[] texto =
         {
@@ -18,7 +19,7 @@ namespace TicketSale
 	        /* 01 */"Tema:",
 	        /* 02 */"Objetivo Geral:",
 	        /* 03 */"Desenvolvimento de um sistema em linguagem C.",
-	        /* 04 */"Desenvolver um sistema em linguagem C para venda de ingressos de teatro.",
+	        /* 04 */"Desenvolver um sistema em linguagem C# para venda de ingressos de teatro.",
 	        /* 05 */"Ticket Sale",
 	        /* 06 */"Digite o nome do Teatro:",
 	        /* 07 */"Digite o nome do Espetaculo:",
@@ -64,38 +65,121 @@ namespace TicketSale
 	        /* 47 */"Ingressos Disponivel:",
 	        /* 48 */"Saldo em Caixa R$:",
 	        /* 49 */"Obrigado por utilizar o Software",
+            /* 50 */"Nome Invalido ", 
         };  
         
-        public void screen_home()
+        public void ScreenHome()
         {
-            screen_header();
-
-            Console.WriteLine("{0}", texto[0]);
-
-            Console.WriteLine("{0} {1}", texto[1], texto[2]);
-
-            Console.WriteLine("{0} {1}", texto[2], texto[4]);
-
-            screen_line();
+            String[] txt = new String[1];
+            ScreenHeader();
+            ScreenCentralizedText(texto[0]);
+            txt[0] = string.Format("{0} {1} ", texto[1], texto[2]);
+            ScreenCentralizedText(txt[0]);
+            txt[0] = string.Format("{0} {1}", texto[2], texto[4]);
+            ScreenCentralizedText(txt[0]);
+            ScreenLine();
         }
 
-        public void screen_header()
+        public void ScreenHeader()
         {
             String[] txt = new String[1];
             data = DateTime.Now;
             Console.Clear();
-            screen_line();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            screen_centralized_text(texto[5]);
+            ScreenLine();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            ScreenCentralizedText(texto[5]);
             Console.WriteLine(" ");
             txt[0] = string.Format("{0} {1}", data.ToString("dddd", idioma),Convert.ToString( DateTime.Now) );
-            screen_centralized_text(txt[0]);
-            Console.Write("\n\r");
+            ScreenCentralizedText(txt[0]);
             Console.ResetColor();
-            screen_line();
+            ScreenLine();
         }
 
-        public void screen_line()
+        public void ScreenConfigInit()
+        {
+            string txt;
+
+            ScreenHeader();
+            
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            ScreenCentralizedText(texto[34]);
+            Console.ResetColor();
+
+            RefazNomeTeato:
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("{0} ", texto[6]);
+            Console.ResetColor();
+           
+            if (Espetaculo.setNomeTreatro( Console.ReadLine() ) == true)
+            {
+                RefazNomeEspetaculo:
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write("{0} ", texto[7]);
+                Console.ResetColor();
+
+                if (Espetaculo.setNomeEspetaculo(Console.ReadLine()) == true)
+                {
+                    RefazDataEspetaculo:
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.Write("{0} ", texto[8]);
+                    Console.ResetColor();
+                    
+                    if( Espetaculo.setDataEspetaculo(Convert.ToDateTime(Console.ReadLine())) == true)
+                    {
+                        RefazValorIngresso:
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("{0} ", texto[9]);
+                        Console.ResetColor();
+
+                        if( Espetaculo.setValorIngresso( Convert.ToSingle(Console.ReadLine() ) ) == true)
+                        {
+                            RefazNumeroDisponivel:
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("{0} ", texto[10]);
+                            Console.ResetColor();
+
+                            if(Espetaculo.setValorIngresso( Convert.ToUInt16( Console.ReadLine()) ) == false)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("{0} \n\r", texto[13]);
+                                Console.ResetColor();
+                                goto RefazNumeroDisponivel;
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("{0} \n\r", texto[12]);
+                            Console.ResetColor();
+                            goto RefazValorIngresso;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("{0} \n\r", texto[11]);
+                        Console.ResetColor();
+                        goto RefazDataEspetaculo;
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("{0} \n\r", texto[50]);
+                    Console.ResetColor();
+                    goto RefazNomeEspetaculo;
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("{0} \n\r", texto[50]);
+                Console.ResetColor();
+                goto RefazNomeTeato;
+            }
+        }
+
+        private void ScreenLine()
         {
             UInt16 i = 0;
             for(i=0;i<NUMBER_CHAR;i++)
@@ -105,7 +189,7 @@ namespace TicketSale
             Console.WriteLine(" ");
         }
 
-        private void screen_putchar(char ch, UInt16 number_ch)
+        private void ScreenPutchar(char ch, UInt16 number_ch)
         {
             UInt16 i = 0;
 
@@ -115,17 +199,22 @@ namespace TicketSale
             }
         }
 
-        private UInt16 screen_calc_number_char(String txt)
+        private UInt16 ScreenCalcNumberChar(String txt)
         {
-            //UInt16 number = 0;
             return (UInt16)((NUMBER_CHAR - txt.Length) / 2);
         }
 
-        private void screen_centralized_text(String txt)
+        private void ScreenCentralizedText(String txt)
         {
-            screen_putchar(' ', screen_calc_number_char(txt));
+            ScreenPutchar(' ', ScreenCalcNumberChar(txt));
             Console.Write("{0}", txt);
-            screen_putchar(' ', screen_calc_number_char(txt));
+            ScreenPutchar(' ', ScreenCalcNumberChar(txt));
+            Console.Write("\n\r");
+        }
+
+        public InfoEspetaculo getInfoEspetaculo()
+        {
+            return Espetaculo;
         }
     }
 }
