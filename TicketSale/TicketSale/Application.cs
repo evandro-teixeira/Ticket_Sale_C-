@@ -9,6 +9,23 @@ namespace TicketSale
 {
     class Application
     {
-       // 
+        public bool CheckProgramFlow(char ch)
+        {
+            try
+            {
+                if ((ch == 'S') || (ch == 's'))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }            
+        }
     }
 }

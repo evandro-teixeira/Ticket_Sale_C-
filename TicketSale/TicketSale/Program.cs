@@ -38,6 +38,12 @@ namespace TicketSale
 
             telas.ScreenConfigInit();
 
+            telas.ScreenCheckStartSale();
+
+            Thread.Sleep(2000);
+
+            telas.SreenPrintShowInformation();
+
             Console.ReadLine();
         }
     }

@@ -23,14 +23,14 @@ namespace TicketSale
 	        /* 05 */"Ticket Sale",
 	        /* 06 */"Digite o nome do Teatro:",
 	        /* 07 */"Digite o nome do Espetaculo:",
-	        /* 08 */"Digite a data do Espetaculo (dd/mm/aa):",
-	        /* 09 */"Digite o valor do ingresso (R$ rr.ss):",
+	        /* 08 */"Digite a data do Espetaculo (dd/mm/aa hh:mm):",
+	        /* 09 */"Digite o valor do ingresso  (R$ rr.ss):",
 	        /* 10 */"Digite o numero de ingresso disponivel:",
 	        /* 11 */"Data Invalida",
 	        /* 12 */"Valor do Ingresso Fora dos Limites",
 	        /* 13 */"Numero de Ingresso Fora dos Limites",
 	        /* 14 */"Deseja Iniciar a Venda dos Ingresso?",
-	        /* 15 */"Digite; S (para Sim) ou N (para Nao):",
+	        /* 15 */"Digite: S (para Sim) ou N (para Nao):",
 	        /* 16 */"Espetaculo:",
 	        /* 17 */"Teatro:",
 	        /* 18 */"Data Espetaculo:",
@@ -97,8 +97,6 @@ namespace TicketSale
 
         public void ScreenConfigInit()
         {
-            string txt;
-
             ScreenHeader();
             
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -138,12 +136,17 @@ namespace TicketSale
                             Console.Write("{0} ", texto[10]);
                             Console.ResetColor();
 
-                            if(Espetaculo.setValorIngresso( Convert.ToUInt16( Console.ReadLine()) ) == false)
+                            if (Espetaculo.setValorIngresso( Convert.ToUInt16( Console.ReadLine()) ) == false)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.Write("{0} \n\r", texto[13]);
                                 Console.ResetColor();
                                 goto RefazNumeroDisponivel;
+                            }
+                            else
+                            {
+                                Console.Write("\n\r");
+                                ScreenLine();
                             }
                         }
                         else
@@ -177,6 +180,44 @@ namespace TicketSale
                 Console.ResetColor();
                 goto RefazNomeTeato;
             }
+        }
+
+        public void ScreenCheckStartSale()
+        {
+            ScreenHeader();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("{0} \n\r", texto[14]);
+            Console.ResetColor();
+            Console.Write("{0} ", texto[15]);
+
+        }
+
+        public void SreenPrintShowInformation()
+        {
+            ScreenHeader();
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+
+            ScreenCentralizedText(texto[34]);
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("{0} ", texto[17]);
+            Console.ResetColor();
+
+            Console.Write("{0} \n\r", getInfoEspetaculo().getNomeEspetaculo());
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("{0} ", texto[16]);
+            Console.ResetColor();
+
+            Console.Write("{0} \n\r", getInfoEspetaculo().getNomeTeatro() );
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("{0} ", texto[18]);
+            Console.ResetColor();
+
+            Console.Write("{0} \n\r",Convert.ToString( getInfoEspetaculo().getDataEspetaculo().Date ) );
         }
 
         private void ScreenLine()
